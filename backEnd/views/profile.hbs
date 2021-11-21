@@ -1,0 +1,25 @@
+<h1>Hello {{FirstName}} {{LastName}}</h1>
+<h2>Email: {{Email}}</h2>
+<h3>Username: {{Username}}</h3>
+
+
+
+<h1>Submit a Post!</h1>
+
+<form id="makePost" name="makePost" method="POST" action="/users/posts" >
+
+    <div>
+        <label for="PostTitle">Title: </label>
+        <input type="text" name="PostTitle">
+    </div>
+    <div>
+        <label for="PostBody">Body: </label>
+        <input type="text" name="PostBody">
+    </div>
+    
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+</form>
+
+{{PostId}} {{PostTitle}}  {{PostBody}}
