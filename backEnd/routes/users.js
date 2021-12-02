@@ -74,7 +74,48 @@ router.get('/profile', function (req, res, next) {
 
 // create post 
 
- 
+router.post('/posts', (req, res) => {
+
+  if (req.user) {
+    models.users
+      .findByPk(parseInt(req.user.UserId))
+      .then(user => {
+        if (user) {
+
+  models.posts
+  
+    .findOrCreate({
+      where: {
+        PostTitle: req.body.PostTitle,
+        PostBody: req.body.PostBody,
+        UserId  : user.UserId,
+        Deleted: req.body.Deleted ? req.body.Deleted : null,
+        createdAt: req.body.createdAt ? req.body.createdAt : null,
+        updatedAt: req.body.updatedAt ? req.body.updatedAt : null
+      }
+    })
+    .spread(function (result) {
+      if (result) {
+        res.render('profile', {
+          FirstName: user.FirstName,
+          LastName: user.LastName,
+          Email: user.Email,
+          Username: user.Username
+        });
+      } else {
+        res.send({success: false});
+      }
+    });
+
+  } else {
+    res.send('User not found');
+  }
+});
+} else {
+res.redirect('/users/login');
+}
+});
+
 
 
 module.exports = router;
