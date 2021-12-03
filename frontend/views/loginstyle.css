@@ -6,14 +6,14 @@ body{
 	align-items: center;
 	min-height: 100vh;
 	font-family: 'Jost', sans-serif;
-	background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
+	background: linear-gradient(to bottom, #030A8C, #020873, #023373,#04D9D9,#025959)
 }
 .main{
 	width: 350px;
 	height: 500px;
 	background: red;
 	overflow: hidden;
-	background: url("https://github.com/Woz-U-Group-Projects/scriptin-sloths/blob/main/frontend/views/pictures/FIRST%20PAGE%20BACKGROUND.jpg") no-repeat center/ cover;
+	background: url("frontend\views\pictures\FIRST PAGE BACKGROUND.jpg") no-repeat center/ cover;
 	border-radius: 10px;
 	box-shadow: 5px 20px 50px #000;
 }
@@ -54,7 +54,7 @@ button{
 	justify-content: center;
 	display: block;
 	color: #fff;
-	background: #573b8a;
+	background: #030A8C;
 	font-size: 1em;
 	font-weight: bold;
 	margin-top: 20px;
@@ -65,7 +65,7 @@ button{
 	cursor: pointer;
 }
 button:hover{
-	background: #6d44b8;
+	background: #030A8C;
 }
 .login{
 	height: 460px;
@@ -75,7 +75,7 @@ button:hover{
 	transition: .8s ease-in-out;
 }
 .login label{
-	color: #573b8a;
+	color: #030A8C;
 	transform: scale(.6);
 }
 
