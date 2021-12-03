@@ -1,3 +1,16 @@
+h1{
+	margin: 0;
+	padding: 2%;
+	display: flex;
+	flex-direction: column;
+  	align-items: stretch;
+  	justify-content: center;
+	align-items: self-position;
+	min-height: 100vh;
+	font-family: 'Papyrus', fantasy;
+	color: white;
+	font-size: xx-large;
+}
 body{
 	margin: 0;
 	padding: 0;
@@ -5,13 +18,12 @@ body{
 	justify-content: center;
 	align-items: center;
 	min-height: 100vh;
-	font-family: 'Jost', sans-serif;
+	font-family: 'Papyrus', fantasy;
 	background: linear-gradient(to bottom, #030A8C, #020873, #023373,#04D9D9,#025959)
 }
 .main{
 	width: 350px;
 	height: 500px;
-	background: red;
 	overflow: hidden;
 	background: url("frontend\views\pictures\FIRST PAGE BACKGROUND.jpg") no-repeat center/ cover;
 	border-radius: 10px;
