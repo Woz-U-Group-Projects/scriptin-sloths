@@ -1,0 +1,49 @@
+ 
+ <div>
+
+<div>
+
+<h1>Hello {{FirstName}}!</h1>
+ <h1>Add a new Post!</h1>
+  Message Board : 
+  <br>
+  {{#each posts}} 
+  {{Username}} : {{PostBody}} <br>
+ {{/each}}
+  
+  
+
+<form action="/users/posts" method="POST">
+
+    
+
+    <div>
+
+        <label for="PostBody">Post: </label>
+
+        <input type="text" name="PostBody">
+
+    </div>
+    
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+
+
+</form>
+
+<form action="/users/logout" method="GET">
+    <button type="submit"> logout </button>
+</form>
+
+</div>
+<br>
+<div>
+
+    
+    
+       
+
+</div>
+
+</div>

@@ -5,40 +5,39 @@
 <h1>Hello {{FirstName}} !!</h1>
 <h2>{{ProfilePic}}</h2>
 <h2>Email: {{Email}}</h2>
-<h3>Username: {{Username}}</h3>
-
-
-  Status Board : 
-  <br>
-  {{#each status}}
+{{Username}}</h3>
+Statuses:
+ {{#each status}}
   {{Username}} : {{StatusBody}} <br>
+ {{/each}}
+
+<br>
+<br>
+  Leave a Kuddos! 
+  <br>
+  {{#each comments}}
+   {{CommentBody}} <br>
  {{/each}}
   
   
 
-<form action="/users/status" method="POST">
-
-    
+<form action="/users/profile/{{UserId}}" method="POST" >
 
     <div>
-
-        <label for="StatusBody">Update Status!: </label>
-
-        <input type="text" name="StatusBody">
-
+        <label for="CommentBody"> </label>
+        <input type="text" name="CommentBody">
     </div>
     
     <div>
+        
         <button type="submit">Submit</button>
     </div>
-
-
 </form>
+
 
 <form action="/users/logout" method="GET">
     <button type="submit"> logout </button>
 </form>
-
 </div>
 <br>
 <div>

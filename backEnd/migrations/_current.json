@@ -1,5 +1,116 @@
 {
     "tables": {
+        "comments": {
+            "tableName": "comments",
+            "schema": {
+                "commentId": {
+                    "allowNull": false,
+                    "autoIncrement": true,
+                    "primaryKey": true,
+                    "field": "commentId",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "UserId": {
+                    "field": "UserId",
+                    "seqType": "Sequelize.STRING"
+                },
+                "CommentBody": {
+                    "field": "CommentBody",
+                    "seqType": "Sequelize.STRING"
+                },
+                "Username": {
+                    "field": "Username",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "Deleted": {
+                    "field": "Deleted",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
+                "createdAt": {
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
+        "posts": {
+            "tableName": "posts",
+            "schema": {
+                "PostId": {
+                    "allowNull": false,
+                    "autoIncrement": true,
+                    "primaryKey": true,
+                    "field": "PostId",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "Username": {
+                    "field": "Username",
+                    "seqType": "Sequelize.STRING"
+                },
+                "PostBody": {
+                    "field": "PostBody",
+                    "seqType": "Sequelize.STRING"
+                },
+                "UserId": {
+                    "field": "UserId",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "Deleted": {
+                    "field": "Deleted",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
+                "createdAt": {
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
+        "statuses": {
+            "tableName": "statuses",
+            "schema": {
+                "statusId": {
+                    "allowNull": false,
+                    "autoIncrement": true,
+                    "primaryKey": true,
+                    "field": "statusId",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "Username": {
+                    "field": "Username",
+                    "seqType": "Sequelize.STRING"
+                },
+                "StatusBody": {
+                    "field": "StatusBody",
+                    "seqType": "Sequelize.STRING"
+                },
+                "UserId": {
+                    "field": "UserId",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "Deleted": {
+                    "field": "Deleted",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
+                "createdAt": {
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
         "users": {
             "tableName": "users",
             "schema": {
@@ -35,6 +146,10 @@
                 "Admin": {
                     "field": "Admin",
                     "seqType": "Sequelize.BOOLEAN"
+                },
+                "ProfilePic": {
+                    "field": "ProfilePic",
+                    "seqType": "Sequelize.STRING"
                 },
                 "Deleted": {
                     "field": "Deleted",
