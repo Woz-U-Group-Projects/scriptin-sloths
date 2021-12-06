@@ -7,7 +7,12 @@
 <h2>Email: {{Email}}</h2>
 <h3>Artist: {{Username}}</h3>
 
-
+Kuddos received:
+<br>
+{{#each comments}}
+   {{CommentBody}} <br>
+ {{/each}}
+  <br>
   Status Board : 
   <br>
   {{#each status}}

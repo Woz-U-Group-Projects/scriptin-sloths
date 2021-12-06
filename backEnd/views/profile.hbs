@@ -2,12 +2,17 @@
 
 <div>
 
-<h1>Hello {{FirstName}} !!</h1>
+<h1>Hello {{FirstName}}!!</h1>
 <h2>{{ProfilePic}}</h2>
 <h2>Email: {{Email}}</h2>
 <h3>Username: {{Username}}</h3>
 
-
+Kuddos received:
+<br>
+{{#each comments}}
+  {{Username}} said {{CommentBody}}!! <br>
+ {{/each}}
+  <br>
   Status Board : 
   <br>
   {{#each status}}

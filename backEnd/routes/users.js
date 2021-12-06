@@ -118,7 +118,10 @@ router.get('/profile/:id', function(req, res, next) {
           }
         })
         .then(status => {
-        res.render('page', {
+          if (user.Admin) {
+
+
+        res.render('apage', {
           FirstName: user.FirstName,
           LastName: user.LastName,
           Email: user.Email,
@@ -129,6 +132,24 @@ router.get('/profile/:id', function(req, res, next) {
           status: status
         }
         );
+      }
+else {
+
+  res.render('page', {
+    FirstName: user.FirstName,
+    LastName: user.LastName,
+    Email: user.Email,
+    Username: user.Username,
+    ProfilePic: user.ProfilePic,
+    UserId: user.UserId,
+    comments: comments,
+    status: status
+  }
+  );
+  
+}
+
+
         })
 
     }) 
@@ -143,6 +164,10 @@ else {
 
 router.post('/profile/:id', function(req, res, next) {
   if (req.user) {
+    models.users
+    .findByPk(parseInt(req.user.UserId))
+    .then(profile => {
+
   models.users
     .findOne({  
       where: { UserId: parseInt(req.params.id) }
@@ -155,6 +180,7 @@ router.post('/profile/:id', function(req, res, next) {
   
       .findOrCreate({
         where: {
+          Username: profile.Username,
           CommentBody: req.body.CommentBody,
           UserId  : user.UserId,
           Deleted: req.body.Deleted ? req.body.Deleted : null,
@@ -177,16 +203,42 @@ router.post('/profile/:id', function(req, res, next) {
           }
         })
         .then(status => {
-        res.render('page', {
-          FirstName: user.FirstName,
-          LastName: user.LastName,
-          Email: user.Email,
-          Username: user.Username,
-          ProfilePic: user.ProfilePic,
-          comments: comments,
-          status: status
-        }
-        );
+
+
+
+          if (user.Admin) {
+
+
+            res.render('apage', {
+              FirstName: user.FirstName,
+              LastName: user.LastName,
+              Email: user.Email,
+              Username: user.Username,
+              ProfilePic: user.ProfilePic,
+              UserId: user.UserId,
+              comments: comments,
+              status: status
+            }
+            );
+          }
+    else {
+    
+      res.render('page', {
+        FirstName: user.FirstName,
+        LastName: user.LastName,
+        Email: user.Email,
+        Username: user.Username,
+        ProfilePic: user.ProfilePic,
+        UserId: user.UserId,
+        comments: comments,
+        status: status
+      }
+      );
+      
+    }
+
+
+
         })
         })
         } else {
@@ -198,7 +250,13 @@ router.post('/profile/:id', function(req, res, next) {
       res.send('User not found');
     }
     });
+
+      })
+
 } 
+
+
+
 else {
   res.redirect('/users/login');
 }
@@ -220,17 +278,27 @@ router.get('/profile', function (req, res, next) {
           }
         })
         .then(status => {
-        res.render('artist', {
-          FirstName: user.FirstName,
-          LastName: user.LastName,
-          Email: user.Email,
-          Username: user.Username,
-          ProfilePic: user.ProfilePic,
-          status: status
-        }
-        );
-        })
+          models.comments
+          .findAll({
+            where: {
+              UserId: user.UserId
+            }
+          })
+          .then(comments => {
 
+            res.render('artist', {
+              FirstName: user.FirstName,
+              LastName: user.LastName,
+              Email: user.Email,
+              Username: user.Username,
+              ProfilePic: user.ProfilePic,
+              status: status,
+              comments: comments
+            }
+            );
+          }
+          )
+        })
       } 
     });
   }
@@ -247,15 +315,26 @@ else {
             }
           })
           .then(status => {
-          res.render('profile', {
-            FirstName: user.FirstName,
-            LastName: user.LastName,
-            Email: user.Email,
-            Username: user.Username,
-            ProfilePic: user.ProfilePic,
-           status: status
-          }    
-          );
+          models.comments
+          .findAll({
+            where: {
+              UserId: user.UserId
+            }
+          })
+          .then(comments => {
+
+            res.render('artist', {
+              FirstName: user.FirstName,
+              LastName: user.LastName,
+              Email: user.Email,
+              Username: user.Username,
+              ProfilePic: user.ProfilePic,
+              status: status,
+              comments: comments
+            }
+            );
+          }
+          )
           })
         } else {
           res.send('User not found');

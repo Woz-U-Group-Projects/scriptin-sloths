@@ -2,20 +2,27 @@
 
 <div>
 
-<h1>Hi, I'm {{FirstName}}!!</h1>
+<h1><h1>Hi, I'm {{FirstName}}!!</h1></h1>
+<br>
 <h2>{{ProfilePic}}</h2>
+<br>
 <h2>Email: {{Email}}</h2>
-{{Username}}</h3>
+<br>
+<h3>Artist: {{Username}}</h3>
+<br>
 Statuses:
+<br>
  {{#each status}}
-  {{Username}} : {{StatusBody}} <br>
+ <br>
+  {{StatusBody}} <br>
  {{/each}}
 
 <br>
 <br>
-  Say Hello! 
+  Leave a Kuddos! 
   <br>
   {{#each comments}}
+  <br>
    {{Username}} said {{CommentBody}}! <br>
  {{/each}}
   
