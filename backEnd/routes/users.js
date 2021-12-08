@@ -9,7 +9,7 @@ var passport = require('../services/passport');
 // artist sign up
 
 router.get('/artistsu', function(req, res, next) {
-  res.render('artistsu');
+  res.render('/users/artistsu');
 });
 
 router.post('/artistsu', function(req, res, next) {
@@ -28,7 +28,7 @@ router.post('/artistsu', function(req, res, next) {
     })
     .spread(function(result, created) {
       if (created) {
-        res.render('login');
+        res.redirect('/users/login');
       } else {
         res.send('This user already exists');
       }
@@ -38,7 +38,7 @@ router.post('/artistsu', function(req, res, next) {
 //user Sign up  
 
 router.get('/signup', function(req, res, next) {
-  res.render('signup');
+  res.render('/users/signup');
 });
 
 router.post('/signup', function(req, res, next) {
@@ -57,7 +57,7 @@ router.post('/signup', function(req, res, next) {
     })
     .spread(function(result, created) {
       if (created) {
-        res.render('login');
+        res.redirect('/users/login');
       } else {
         res.send('This user already exists');
       }
@@ -71,7 +71,7 @@ router.get('/login', function(req, res, next) {
 });
 
 router.post('/login', passport.authenticate('local', { failureRedirect: '/users/login' }),
-  function (req, res, next) { res.redirect('profile') });
+  function (req, res, next) { res.redirect('/users/profile') });
   
 // Find all Artists
 
@@ -83,10 +83,7 @@ router.get('/artists', function (req, res, next) {
       })
       .then(artists => {
           
-          res.render('artists', {
-            artists: artists
-          }
-          );
+        res.send(JSON.stringify(artists));
 
       });
   } else {
@@ -121,31 +118,11 @@ router.get('/profile/:id', function(req, res, next) {
           if (user.Admin) {
 
 
-        res.render('apage', {
-          FirstName: user.FirstName,
-          LastName: user.LastName,
-          Email: user.Email,
-          Username: user.Username,
-          ProfilePic: user.ProfilePic,
-          UserId: user.UserId,
-          comments: comments,
-          status: status
-        }
-        );
+            res.send(JSON.stringify(user,comments,status));
       }
 else {
 
-  res.render('page', {
-    FirstName: user.FirstName,
-    LastName: user.LastName,
-    Email: user.Email,
-    Username: user.Username,
-    ProfilePic: user.ProfilePic,
-    UserId: user.UserId,
-    comments: comments,
-    status: status
-  }
-  );
+  res.send(JSON.stringify(user,comments,status));
   
 }
 
@@ -209,36 +186,13 @@ router.post('/profile/:id', function(req, res, next) {
           if (user.Admin) {
 
 
-            res.render('apage', {
-              FirstName: user.FirstName,
-              LastName: user.LastName,
-              Email: user.Email,
-              Username: user.Username,
-              ProfilePic: user.ProfilePic,
-              UserId: user.UserId,
-              comments: comments,
-              status: status
-            }
-            );
+            res.send(JSON.stringify(user,comments,status));
           }
     else {
     
-      res.render('page', {
-        FirstName: user.FirstName,
-        LastName: user.LastName,
-        Email: user.Email,
-        Username: user.Username,
-        ProfilePic: user.ProfilePic,
-        UserId: user.UserId,
-        comments: comments,
-        status: status
-      }
-      );
+      res.send(JSON.stringify(user,comments,status));
       
     }
-
-
-
         })
         })
         } else {
@@ -254,8 +208,6 @@ router.post('/profile/:id', function(req, res, next) {
       })
 
 } 
-
-
 
 else {
   res.redirect('/users/login');
@@ -286,16 +238,7 @@ router.get('/profile', function (req, res, next) {
           })
           .then(comments => {
 
-            res.render('artist', {
-              FirstName: user.FirstName,
-              LastName: user.LastName,
-              Email: user.Email,
-              Username: user.Username,
-              ProfilePic: user.ProfilePic,
-              status: status,
-              comments: comments
-            }
-            );
+            res.send(JSON.stringify(user,comments,status));
           }
           )
         })
@@ -323,16 +266,7 @@ else {
           })
           .then(comments => {
 
-            res.render('artist', {
-              FirstName: user.FirstName,
-              LastName: user.LastName,
-              Email: user.Email,
-              Username: user.Username,
-              ProfilePic: user.ProfilePic,
-              status: status,
-              comments: comments
-            }
-            );
+            res.send(JSON.stringify(user,comments,status));
           }
           )
           })
@@ -377,14 +311,7 @@ router.post('/astatus', (req, res) => {
           }
         })
         .then(status => {
-        res.render('artist', {
-          FirstName: user.FirstName,
-          LastName: user.LastName,
-          Email: user.Email,
-          Username: user.Username,
-          ProfilePic: user.ProfilePic,
-          status: status
-        });
+          res.send(JSON.stringify(user,status));
       })
       } else {
         res.send({success: false});
@@ -430,14 +357,7 @@ router.post('/status', (req, res) => {
           }
         })
         .then(status => {
-        res.render('profile', {
-          FirstName: user.FirstName,
-          LastName: user.LastName,
-          Email: user.Email,
-          Username: user.Username,
-          ProfilePic: user.ProfilePic,
-          status: status
-        });
+          res.send(JSON.stringify(user,status));
       })
       } else {
         res.send({success: false});
@@ -479,14 +399,7 @@ router.post('/posts', (req, res) => {
         models.posts
         .findAll({})
         .then(posts => {
-        res.render('posts', {
-          FirstName: user.FirstName,
-          LastName: user.LastName,
-          Email: user.Email,
-          Username: user.Username,
-          ProfilePic: user.ProfilePic,
-          posts: posts
-        });
+          res.send(JSON.stringify(user,posts));
       })
       } else {
         res.send({success: false});
@@ -515,15 +428,7 @@ router.get('/posts', function (req, res, next) {
           .findAll({ 
           })
           .then(posts => {
-          res.render('posts', {
-            FirstName: user.FirstName,
-            LastName: user.LastName,
-            Email: user.Email,
-            Username: user.Username,
-            ProfilePic: user.ProfilePic,
-            posts: posts
-          }
-          );
+            res.send(JSON.stringify(user,posts));
           })
         } else {
           res.send('User not found');
