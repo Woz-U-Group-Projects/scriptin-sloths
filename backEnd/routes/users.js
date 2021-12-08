@@ -67,7 +67,7 @@ router.post('/signup', function(req, res, next) {
 // user Login in 
 
 router.get('/login', function(req, res, next) {
-  res.render('login');
+  res.render('users/login');
 });
 
 router.post('/login', passport.authenticate('local', { failureRedirect: '/users/login' }),
