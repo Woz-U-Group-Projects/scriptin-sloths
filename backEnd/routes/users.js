@@ -6,7 +6,22 @@ const posts = require('../models/posts');
 const users = require('../models/users');
 var passport = require('../services/passport'); 
 
+
+
+router.use("/user", (req, res) => {
+  if(req.user){
+  models.users.findall({
+      where: {UserId: req.user.UserId}
+    }).then(user =>{
+    res.send(JSON.stringify(user));
+  })
+}
+});
+
+
 // artist sign up
+
+
 
 router.get('/artistsu', function(req, res, next) {
   res.render('/users/artistsu');
@@ -28,7 +43,7 @@ router.post('/artistsu', function(req, res, next) {
     })
     .spread(function(result, created) {
       if (created) {
-        res.redirect('/users/login');
+        res.redirect('http://localhost:8080/');
       } else {
         res.send('This user already exists');
       }
@@ -52,12 +67,13 @@ router.post('/signup', function(req, res, next) {
         FirstName: req.body.firstName,
         LastName: req.body.lastName,
         Email: req.body.email,
-        Password: req.body.password
+        Password: req.body.password,
+        Admin: false
       }
     })
     .spread(function(result, created) {
       if (created) {
-        res.redirect('/users/login');
+        res.redirect('http://localhost:8080/');
       } else {
         res.send('This user already exists');
       }
@@ -66,13 +82,40 @@ router.post('/signup', function(req, res, next) {
 
 // user Login in 
 
-router.get('/login', function(req, res, next) {
-  res.render('users/login');
-});
+
 
 router.post('/login', passport.authenticate('local', { failureRedirect: '/users/login' }),
-  function (req, res, next) { res.redirect('/users/profile') });
+  function (req, res, next) { 
+    if (req.user && req.user.Admin){
+      
+      res.send(JSON.stringify(req.user));
+          
+     
+    }
+    else {
+    res.redirect('http://localhost:8080/myprofile');
+  }
+});
   
+// Find all Users
+
+router.get('/members', function (req, res, next) {
+  if (req.user) {
+    models.users
+      .findAll({
+        where: {Admin: false}
+      })
+      .then(members => {
+        res.send(JSON.stringify(members));
+      });
+    } 
+
+    else {
+      res.redirect('http://localhost:8080/');
+    }
+    
+});
+
 // Find all Artists
 
 router.get('/artists', function (req, res, next) {
@@ -82,14 +125,17 @@ router.get('/artists', function (req, res, next) {
         where: {Admin: true}
       })
       .then(artists => {
-          
         res.send(JSON.stringify(artists));
-
       });
-  } else {
-    res.redirect('/users/login');
-  }
+    } 
+    else {
+      res.redirect('http://localhost:8080/');
+    }
 });
+
+
+
+   
 
 // members by id
 
@@ -97,7 +143,7 @@ router.get('/profile/:id', function(req, res, next) {
   if (req.user) {
   models.users
     .findOne({  
-      where: { UserId: parseInt(req.params.id) }
+      where: { UserId: parseInt(req.user.UserId) }
     })
     .then(user => {
   
@@ -133,7 +179,7 @@ else {
     });
 }
 else {
-  res.redirect('/users/login');
+  res.redirect('http://localhost:8080/');
 }
 });
 
@@ -210,41 +256,27 @@ router.post('/profile/:id', function(req, res, next) {
 } 
 
 else {
-  res.redirect('/users/login');
+  res.redirect('http://localhost:8080/');
 }
 });
 
 // artist & user profile 
+
+
+
+
+
+
 
 router.get('/profile', function (req, res, next) {
   if (req.user && req.user.Admin) {
     models.users
     .findByPk(parseInt(req.user.UserId))
     .then(user => {
-      if (user) {
-
-        models.status
-        .findAll({
-          where: {
-            UserId: user.UserId
-          }
-        })
-        .then(status => {
-          models.comments
-          .findAll({
-            where: {
-              UserId: user.UserId
-            }
-          })
-          .then(comments => {
-
-            res.send(JSON.stringify(user,comments,status));
-          }
-          )
-        })
-      } 
+      res.send(JSON.stringify(user)); 
     });
   }
+  
 else {
   if (req.user) {
     models.users
@@ -322,7 +354,7 @@ router.post('/astatus', (req, res) => {
   }
 });
 } else {
-res.redirect('/users/login');
+res.redirect('http://localhost:8080/');
 }
 });
 
@@ -357,7 +389,8 @@ router.post('/status', (req, res) => {
           }
         })
         .then(status => {
-          res.send(JSON.stringify(user,status));
+          
+          res.redirect('http://localhost:8080/myprofile');
       })
       } else {
         res.send({success: false});
@@ -368,7 +401,7 @@ router.post('/status', (req, res) => {
   }
 });
 } else {
-res.redirect('/users/login');
+res.redirect('http://localhost:8080/');
 }
 });
 
@@ -411,7 +444,7 @@ router.post('/posts', (req, res) => {
   }
 });
 } else {
-res.redirect('/users/login');
+res.redirect('http://localhost:8080/');
 }
 });
 
@@ -435,7 +468,7 @@ router.get('/posts', function (req, res, next) {
         }
       });
   } else {
-    res.redirect('/users/login');
+    res.redirect('http://localhost:8080/');
   }
 });
 
@@ -443,7 +476,7 @@ router.get('/posts', function (req, res, next) {
 
 router.get('/logout', function(req, res){
   req.logout();
-  res.redirect('/users/login');
+  res.redirect('http://localhost:8080/');
 });
 
 module.exports = router;
