@@ -3,9 +3,9 @@ import Header from '../components/Header';
 import Users from '../components/Users';
 
 
-const MyProfile = () => (
+const MyProfile = ( {Match}) => (
   <div >
-   <Users uri="http://localhost:3002/users/user" />
+   <Users uri="http://localhost:3002/users/profile" />
  <h1>my profile</h1>
 <div>
  <h1>Hello !!</h1>
@@ -15,9 +15,6 @@ const MyProfile = () => (
 </div>
 <hr/>
 <form action="http://localhost:3002/users/status" method="POST">
-
-    
-
     <div>
 
         <label for="StatusBody">Update Status!: </label>
@@ -29,12 +26,7 @@ const MyProfile = () => (
     <div>
         <button type="submit">Submit</button>
     </div>
-
-
 </form>
- 
-  
-
   </div>
 );
 

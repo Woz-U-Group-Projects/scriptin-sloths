@@ -5,23 +5,10 @@ var models = require('../models');
 const posts = require('../models/posts');
 const users = require('../models/users');
 var passport = require('../services/passport'); 
-
-
-
-router.use("/user", (req, res) => {
-  if(req.user){
-  models.users.findall({
-      where: {UserId: req.user.UserId}
-    }).then(user =>{
-    res.send(JSON.stringify(user));
-  })
-}
-});
+var authService = require('../services/auth');
 
 
 // artist sign up
-
-
 
 router.get('/artistsu', function(req, res, next) {
   res.render('/users/artistsu');
@@ -80,11 +67,40 @@ router.post('/signup', function(req, res, next) {
     });
 });
 
-// user Login in 
+
+
+// new user login
+
+router.post('/login', passport.authenticate('local', { failureRedirect: '/users/login' }), function (req, res, next) {
+  models.users.findOne({
+    where: {
+      Username: req.body.username,
+      Password: req.body.password
+    }
+  }).then(user => {
+    if (!user) {
+      console.log('User not found')
+      return res.status(401).json({
+        message: "Login Failed"
+      });
+    }
+    if (user) {
+      let token = authService.signUser(user); // <--- Uses the authService to create jwt token
+      res.cookie('jwt', token); // <--- Adds token to response as a cookie
+      res.send(JSON.stringify(req.user));
+    } else {
+      console.log('Wrong password');
+      res.redirect('http://localhost:8080/');
+    }
+  });
+});
+
+
+// old user Login in 
 
 
 
-router.post('/login', passport.authenticate('local', { failureRedirect: '/users/login' }),
+router.post('/oldlogin', passport.authenticate('local', { failureRedirect: '/users/login' }),
   function (req, res, next) { 
     if (req.user && req.user.Admin){
       
@@ -260,15 +276,31 @@ else {
 }
 });
 
-// artist & user profile 
-
-
-
-
-
-
+// new profile
 
 router.get('/profile', function (req, res, next) {
+  let token = req.cookies.jwt;
+  if (token) {
+    authService.verifyUser(token)
+      .then(user => {
+        if (user) {
+          res.send(JSON.stringify(user));
+        } else {
+          res.status(401);
+          res.send('Invalid authentication token');
+        }
+      });
+  } else {
+    res.status(401);
+    res.send('Must be logged in');
+  }
+});
+
+
+// artist & user old profile 
+
+
+router.get('/oldprofile', function (req, res, next) {
   if (req.user && req.user.Admin) {
     models.users
     .findByPk(parseInt(req.user.UserId))
@@ -472,9 +504,19 @@ router.get('/posts', function (req, res, next) {
   }
 });
 
+
+
+//
+
+router.get('/logout', function (req, res, next) {
+  res.cookie('jwt', "", { expires: new Date(0) });
+  res.send('Logged out');
+  });
+
+
 // logout
 
-router.get('/logout', function(req, res){
+router.get('/oldlogout', function(req, res){
   req.logout();
   res.redirect('http://localhost:8080/');
 });
